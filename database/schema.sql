@@ -29,3 +29,9 @@ create policy "own sessions update" on public.trading_sessions for update to aut
 create policy "own trades select" on public.trades for select to authenticated using ((select auth.uid())=user_id);
 create policy "own trades insert" on public.trades for insert to authenticated with check ((select auth.uid())=user_id);
 create policy "own trades update" on public.trades for update to authenticated using ((select auth.uid())=user_id) with check ((select auth.uid())=user_id);
+
+
+create index if not exists idx_sessions_user on public.trading_sessions(user_id);
+create index if not exists idx_trades_user on public.trades(user_id);
+create index if not exists idx_trades_session on public.trades(session_id);
+create index if not exists idx_trades_created on public.trades(created_at desc);
