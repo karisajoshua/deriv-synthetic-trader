@@ -1,0 +1,3 @@
+import {createClient} from "@supabase/supabase-js";
+export const runtime="nodejs";
+export async function GET(){const url=process.env.NEXT_PUBLIC_SUPABASE_URL??"https://udlwvviwbrzfkczgusnl.supabase.co";const key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY??"sb_publishable_3ee2j4bm9Ql8W5vR06daaA_tpQwJMBt";try{const db=createClient(url,key);const {error}=await db.from("trading_sessions").select("id").limit(1);if(error&&!/permission|row-level/i.test(error.message))throw error;return Response.json({connected:true,project:"udlwvviwbrzfkczgusnl",rls:true});}catch(e){return Response.json({connected:false,reason:e instanceof Error?e.message:"DATABASE_CONNECTION_FAILED"},{status:502});}}
