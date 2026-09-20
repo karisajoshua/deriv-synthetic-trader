@@ -1,0 +1,3 @@
+import type {Candidate} from "../strategies/types";
+export type GateInput={candidate:Candidate;minSetupScore:number;stake:number;balance:number;maxStakeFraction:number;expectedValue?:number;demo:boolean;stopReason:string|null};
+export function executionGate(x:GateInput){if(!x.demo)return{ok:false,reason:"REAL_MONEY_DISABLED"};if(x.stopReason)return{ok:false,reason:x.stopReason};if(x.candidate.setupScore<x.minSetupScore)return{ok:false,reason:"SETUP_SCORE"};if(x.stake<=0||x.stake>x.balance*x.maxStakeFraction)return{ok:false,reason:"STAKE_LIMIT"};if(x.expectedValue!==undefined&&x.expectedValue<=0)return{ok:false,reason:"NON_POSITIVE_EV"};return{ok:true,reason:"QUALIFIED"};}
