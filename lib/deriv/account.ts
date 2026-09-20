@@ -1,0 +1,5 @@
+const API_BASE="https://api.derivws.com";
+export type DerivOptionsAccount={account_id:string;account_type?:string;currency?:string;[key:string]:unknown};
+function headers(token:string,appId:string){return{Authorization:`Bearer ${token}`,"Deriv-App-ID":appId,"Content-Type":"application/json"};}
+export async function getOptionsAccounts(token:string,appId:string){const r=await fetch(`${API_BASE}/trading/v1/options/accounts`,{headers:headers(token,appId),cache:"no-store"});if(!r.ok)throw new Error(`Deriv accounts request failed (${r.status})`);return r.json();}
+export async function getAuthenticatedWsUrl(accountId:string,token:string,appId:string){const r=await fetch(`${API_BASE}/trading/v1/options/accounts/${encodeURIComponent(accountId)}/otp`,{method:"POST",headers:headers(token,appId),cache:"no-store"});if(!r.ok)throw new Error(`Deriv OTP request failed (${r.status})`);const body=await r.json();const url=body?.data?.url;if(!url)throw new Error("Deriv did not return an authenticated WebSocket URL");return url as string;}
