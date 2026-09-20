@@ -1,0 +1,1 @@
+export function cappedRecoveryStake(baseStake:number,outstandingLoss:number,maxStake:number,recoveryFraction=.5){const desired=baseStake+Math.max(0,outstandingLoss)*recoveryFraction;return Math.min(maxStake,Number(desired.toFixed(2)));}
